@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task.dynamicregex.controllers.IdentityInputController">
+   <Label alignment="CENTER" layoutX="371.0" layoutY="30.0" prefHeight="86.0" styleClass="title" text="Dynamic Regex" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <font>
+         <Font name="Arial" size="40.0" />
+      </font>
+      <effect>
+         <DropShadow height="20.0" radius="9.5" width="20.0">
+            <color>
+               <Color opacity="0.5" />
+            </color>
+         </DropShadow>
+      </effect>
+   </Label>
+   <Label alignment="CENTER" layoutX="396.0" layoutY="133.0" text="Case Identity" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="123.0">
+      <font>
+         <Font name="Arial" size="25.0" />
+      </font>
+   </Label>
+   <GridPane layoutX="100.0" layoutY="220.0" vgap="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="200.0" />
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <Label text="Investigator's name">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="investigatorTextField" onKeyReleased="#investigatorTextFieldOnKeyReleased" prefHeight="40.0" GridPane.columnIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="10.0" layoutY="19.0" text="Handled case" GridPane.rowIndex="1">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="caseTextField" onKeyReleased="#caseTextFieldOnKeyReleased" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="10.0" layoutY="56.0" text="Case description" GridPane.rowIndex="2">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="descriptionTextField" onKeyReleased="#descriptionTextFieldOnKeyReleased" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+   </GridPane>
+   <Button fx:id="nextButton" alignment="CENTER" defaultButton="true" disable="true" layoutX="623.0" layoutY="471.0" mnemonicParsing="false" onAction="#nextButtonOnAction" prefHeight="40.0" text="Next" textAlignment="CENTER" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="16.0" />
+      </font>
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
+   </Button>
+</AnchorPane>
