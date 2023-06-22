@@ -11,6 +11,9 @@ public class Result {
         this.result = result;
     }
 
+    public Result() {
+    }
+
     public String getField() {
         return field;
     }

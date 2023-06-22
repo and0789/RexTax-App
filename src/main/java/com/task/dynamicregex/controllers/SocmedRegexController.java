@@ -1,6 +1,7 @@
 package com.task.dynamicregex.controllers;
 
 import com.task.dynamicregex.dao.SocmedRegexDao;
+import com.task.dynamicregex.entities.Result;
 import com.task.dynamicregex.entities.SocmedRegex;
 import com.task.dynamicregex.utils.Common;
 import com.task.dynamicregex.utils.Helper;
@@ -100,21 +101,22 @@ public class SocmedRegexController implements Initializable {
     @FXML
     private void processButtonOnAction(ActionEvent actionEvent) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(Common.SELECTED_FILE));
-        StringBuilder sb = new StringBuilder();
         String line;
+        ObservableList<Result> results = FXCollections.observableArrayList();
 
         while ((line = bufferedReader.readLine()) != null) {
             for (SocmedRegex socmedRegex : selectedSocmedRegexList) {
                 Pattern pattern = Pattern.compile(socmedRegex.getRegex());
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.matches()) {
-                    sb.append(line).append("\n");
+                    results.add(new Result(socmedRegex.getField(), line));
                 }
             }
-
         }
 
-        System.out.println(sb);
+        Common.RESULTS = results;
+        Helper.changePage(processButton, "result.fxml");
+
     }
 
     @FXML

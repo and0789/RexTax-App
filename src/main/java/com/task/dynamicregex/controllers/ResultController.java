@@ -2,6 +2,7 @@ package com.task.dynamicregex.controllers;
 
 import com.task.dynamicregex.entities.Result;
 import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.Helper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,6 +41,7 @@ public class ResultController implements Initializable {
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) {
+    private void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Helper.changePage(backButton, "socmed-regex.fxml");
     }
 }
