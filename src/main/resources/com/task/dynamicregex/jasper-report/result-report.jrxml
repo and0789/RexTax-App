@@ -216,11 +216,11 @@
 					<datasetRun subDataset="ResultDataset" uuid="9c7d3b33-ab48-44ea-ac7f-9592feda3e61">
 						<dataSourceExpression><![CDATA[$P{data_source}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="40" uuid="4f7a82d6-dd93-41fc-b5bd-e5333758362e">
+					<jr:column width="50" uuid="4f7a82d6-dd93-41fc-b5bd-e5333758362e">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="48e558cd-e487-447d-8924-caae1c33f2d1"/>
+								<reportElement x="0" y="0" width="50" height="30" uuid="48e558cd-e487-447d-8924-caae1c33f2d1"/>
 								<box>
 									<topPen lineWidth="0.5"/>
 									<leftPen lineWidth="0.5"/>
@@ -235,7 +235,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table 2_TD" height="25">
 							<textField textAdjust="StretchHeight">
-								<reportElement stretchType="ContainerHeight" x="0" y="0" width="40" height="25" uuid="9e7c1638-de10-4210-943a-abf8bb16cdc3"/>
+								<reportElement stretchType="ContainerHeight" x="0" y="0" width="50" height="25" uuid="9e7c1638-de10-4210-943a-abf8bb16cdc3"/>
 								<box leftPadding="5" rightPadding="5">
 									<topPen lineWidth="0.5"/>
 									<leftPen lineWidth="0.5"/>
@@ -284,12 +284,12 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="355" uuid="3f73bde7-57b7-42e7-b488-6e9103d7e2b3">
+					<jr:column width="345" uuid="3f73bde7-57b7-42e7-b488-6e9103d7e2b3">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="355" height="30" uuid="9e5cb38b-eabc-4368-9abc-038ab55560a4"/>
+								<reportElement x="0" y="0" width="345" height="30" uuid="9e5cb38b-eabc-4368-9abc-038ab55560a4"/>
 								<box>
 									<topPen lineWidth="0.5"/>
 									<leftPen lineWidth="0.5"/>
@@ -305,7 +305,7 @@
 						<jr:detailCell style="Table 2_TD" height="25">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField textAdjust="StretchHeight">
-								<reportElement stretchType="ContainerHeight" x="0" y="0" width="355" height="25" uuid="e9fd131a-1375-4c7e-bec3-9adb02dec233"/>
+								<reportElement stretchType="ContainerHeight" x="0" y="0" width="345" height="25" uuid="e9fd131a-1375-4c7e-bec3-9adb02dec233"/>
 								<box leftPadding="5" rightPadding="5">
 									<topPen lineWidth="0.5"/>
 									<leftPen lineWidth="0.5"/>

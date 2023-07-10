@@ -37,3 +37,7 @@
 .table-view .column-center {
     -fx-alignment: CENTER;
 }
+
+.progress-bar {
+    -fx-accent: #0C80D4;
+}

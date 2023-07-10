@@ -52,6 +52,9 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <ProgressBar fx:id="progressBar" layoutX="110.0" layoutY="487.0" progress="0.0" visible="false" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
-   <Label fx:id="progressCountLabel" alignment="CENTER" layoutX="407.0" layoutY="488.0" text="0" visible="false" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+   <ProgressBar fx:id="progressBar" layoutX="110.0" layoutY="487.0" prefHeight="20.0" progress="0.0" style="-fx-accent: #0C80D4;" visible="false" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+   <Label fx:id="progressCountLabel" alignment="CENTER" layoutX="100.0" layoutY="477.0" text="0" visible="false" AnchorPane.bottomAnchor="108.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="11.0" />
+      </font></Label>
 </AnchorPane>

@@ -66,7 +66,6 @@ public class ResultController implements Initializable {
                 BasicConfigurator.configure();
                 HashMap<String, Object> param = new HashMap<>();
                 List<Result> resultList = new ArrayList<>();
-                int totalPages = 0;
 
                 for (Result item : resultTableView.getItems()) {
                     Result result = new Result(item.getField(), item.getResult());
@@ -130,20 +129,12 @@ public class ResultController implements Initializable {
                 try {
                     InputStream inputStream = this.getClass().getResourceAsStream("/com/task/dynamicregex/jasper-report/result-report.jasper");
                     JasperPrint print = JasperFillManager.fillReport(inputStream, param, new JREmptyDataSource());
-
-                    for (JRPrintPage page : print.getPages()) {
-                        totalPages++;
-                    }
-
                     JasperViewer viewer = new JasperViewer(print, false);
                     viewer.setVisible(true);
                     viewer.setFitPageZoomRatio();
                 } catch (JRException e) {
                     throw new RuntimeException(e);
                 }
-
-                final int finalTotalPages = totalPages;
-                updateMessage(finalTotalPages + " pages exported");
 
                 return null;
             }
@@ -153,22 +144,26 @@ public class ResultController implements Initializable {
             AnchorPane.setBottomAnchor(resultTableView, 140.0);
             progressBar.setVisible(true);
             progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            progressBar.setStyle("-fx-accent: #0C80D4");
             progressCountLabel.setVisible(true);
+            progressCountLabel.setStyle("-fx-text-fill: black");
+            progressCountLabel.setText("Exporting...");
         });
 
         task.setOnSucceeded(event -> {
-            progressBar.setProgress(0);
-            progressCountLabel.textProperty().unbind();
+            progressBar.setProgress(1);
+            progressBar.setStyle("-fx-accent: #00bd90");
+            progressCountLabel.setStyle("-fx-text-fill: white");
+            progressCountLabel.setText("Export successful");
         });
 
         task.setOnFailed(event -> {
-            progressBar.setProgress(0);
-            progressCountLabel.setText("Failed");
-            progressCountLabel.textProperty().unbind();
+            progressBar.setProgress(1);
+            progressBar.setStyle("-fx-accent: #FF3F3F");
+            progressCountLabel.setStyle("-fx-text-fill: white");
+            progressCountLabel.setText("Export failed");
             System.out.println(task.getException().getMessage());
         });
-
-        progressCountLabel.textProperty().bind(task.messageProperty());
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);
