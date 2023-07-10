@@ -9,20 +9,25 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class SocmedRegexController implements Initializable {
 
@@ -42,6 +47,10 @@ public class SocmedRegexController implements Initializable {
     private TableColumn<SocmedRegex, String> fieldTableColumn;
     @FXML
     private TableColumn<SocmedRegex, String> regexTableColumn;
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Label progressCountLabel;
 
     private ObservableList<SocmedRegex> socmedRegexList;
     private List<SocmedRegex> selectedSocmedRegexList;
@@ -99,24 +108,97 @@ public class SocmedRegexController implements Initializable {
     }
 
     @FXML
-    private void processButtonOnAction(ActionEvent actionEvent) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Common.SELECTED_FILE));
-        String line;
-        ObservableList<Result> results = FXCollections.observableArrayList();
+    private void processButtonOnAction(ActionEvent actionEvent) {
+        Task<ObservableList<Result>> task = new Task<>() {
+            @Override
+            protected ObservableList<Result> call() throws Exception {
+                Stream<String> lines = Files.lines(Common.SELECTED_FILE.toPath());
+                List<String> wordList = lines.flatMap(line -> Arrays.stream(line.split("\\s+"))).toList();
+                lines.close();
 
-        while ((line = bufferedReader.readLine()) != null) {
-            for (SocmedRegex socmedRegex : selectedSocmedRegexList) {
-                Pattern pattern = Pattern.compile(socmedRegex.getRegex());
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.matches()) {
-                    results.add(new Result(socmedRegex.getField(), line));
+                int numThreads = Runtime.getRuntime().availableProcessors();
+                int chunkSize = wordList.size() / numThreads;
+
+                ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+                List<Future<ObservableList<Result>>> futures = new ArrayList<>();
+
+                for (int i = 0; i < numThreads; i++) {
+                    int startIndex = i * chunkSize;
+                    int endIndex = (i == numThreads - 1) ? wordList.size() : (i + 1) * chunkSize;
+
+                    List<String> subList = wordList.subList(startIndex, endIndex);
+
+                    Callable<ObservableList<Result>> task2 = () -> {
+                        ObservableList<Result> results = FXCollections.observableArrayList();
+                        int wordCount = 0;
+
+                        for (String sub : subList) {
+                            for (SocmedRegex socmedRegex : selectedSocmedRegexList) {
+                                Pattern pattern = Pattern.compile(socmedRegex.getRegex());
+                                Matcher matcher = pattern.matcher(sub);
+                                if (matcher.matches()) {
+                                    results.add(new Result(socmedRegex.getField(), sub));
+                                    wordCount++;
+                                    if (wordCount % 1000 == 0) {
+                                        updateMessage(wordCount + " results found");
+                                    }
+                                }
+                            }
+                        }
+
+                        return results;
+                    };
+
+                    Future<ObservableList<Result>> future = executorService.submit(task2);
+                    futures.add(future);
                 }
+
+                ObservableList<Result> combinedResults = FXCollections.observableArrayList();
+
+                for (Future<ObservableList<Result>> future : futures) {
+                    try {
+                        ObservableList<Result> results = future.get();
+                        combinedResults.addAll(results);
+                    } catch (ExecutionException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                executorService.shutdown();
+                return combinedResults;
             }
-        }
+        };
 
-        Common.RESULTS = results;
-        Helper.changePage(processButton, "result.fxml");
+        task.setOnRunning(event -> {
+            AnchorPane.setBottomAnchor(socmedRegexTableView, 140.0);
+            progressBar.setVisible(true);
+            progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            progressCountLabel.setVisible(true);
+        });
 
+        task.setOnSucceeded(event -> {
+            progressBar.setProgress(0);
+            progressCountLabel.textProperty().unbind();
+            Common.RESULTS = task.getValue();
+            try {
+                Helper.changePage(processButton, "result.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        task.setOnFailed(event -> {
+            progressBar.setProgress(0);
+            progressCountLabel.setText("Failed");
+            progressCountLabel.textProperty().unbind();
+            System.out.println(task.getException().getMessage());
+        });
+
+        progressCountLabel.textProperty().bind(task.messageProperty());
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML

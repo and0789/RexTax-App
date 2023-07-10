@@ -73,6 +73,11 @@ COPY public.case_identity (id, investigators_name, handled_case, case_descriptio
 --
 
 COPY public.social_media (id, name) FROM stdin;
+2f19a939-8434-489c-9062-8598074eef83	Facebook
+4284e96b-4e66-40da-bf0b-26b1b3090b65	Instagram
+749776ba-1c34-4080-994a-c54a37714cdc	WhatsApp
+8c319d48-fbb9-47cb-b995-e7f2ecb6fd09	Telegram
+1033cf2d-2dfa-468e-aba5-2c184e217ef1	Twitter
 \.
 
 
@@ -81,6 +86,9 @@ COPY public.social_media (id, name) FROM stdin;
 --
 
 COPY public.socmed_regex (id, field, regex, socmed_id) FROM stdin;
+0849e175-beb3-4e83-a4c4-5cc861cc81ad	facebook.com	[A-Za-z0-9]+://facebook\\.com/[A-Za-z]+/[A-Za-z]+	2f19a939-8434-489c-9062-8598074eef83
+cd15e5d6-7de6-41cc-913a-9b8be357f4b1	alfanumerik	[A-Za-z0-9]+	2f19a939-8434-489c-9062-8598074eef83
+fd89ba23-baa9-4ec2-89ea-21a296a7b281	Username FB	\\b(?:https?:\\/\\/)?(?:www\\.)?facebook\\.com\\/([a-zA-Z0-9_\\.]+)\\b	2f19a939-8434-489c-9062-8598074eef83
 \.
 
 

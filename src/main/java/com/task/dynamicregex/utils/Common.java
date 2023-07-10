@@ -3,7 +3,6 @@ package com.task.dynamicregex.utils;
 import com.task.dynamicregex.entities.CaseIdentity;
 import com.task.dynamicregex.entities.Result;
 import com.task.dynamicregex.entities.SocialMedia;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;

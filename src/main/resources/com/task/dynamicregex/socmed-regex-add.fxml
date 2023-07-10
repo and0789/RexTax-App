@@ -70,7 +70,7 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <Separator layoutX="259.0" layoutY="348.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+   <Separator layoutX="100.0" layoutY="354.0" AnchorPane.bottomAnchor="243.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="354.0" />
    <Button fx:id="addButton" disable="true" layoutX="632.0" layoutY="286.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="40.0" styleClass="green" text="Add" AnchorPane.rightAnchor="100.0">
       <font>
          <Font size="15.0" />
@@ -79,12 +79,12 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <Label layoutX="100.0" layoutY="379.0" text="Desired Pattern" AnchorPane.leftAnchor="100.0">
+   <Label layoutX="100.0" layoutY="379.0" text="Desired Pattern" AnchorPane.bottomAnchor="198.0" AnchorPane.leftAnchor="100.0">
       <font>
          <Font name="Arial" size="20.0" />
       </font>
    </Label>
-   <HBox layoutX="100.0" layoutY="413.0" spacing="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+   <HBox layoutX="100.0" layoutY="413.0" spacing="20.0" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
       <TextField fx:id="desiredPatternTextField" prefHeight="40.0" HBox.hgrow="ALWAYS">
          <font>
             <Font size="16.0" />
@@ -99,7 +99,7 @@
          </padding>
       </Button>
    </HBox>
-   <Label layoutX="100.0" layoutY="478.0" text="Regex Recommendation" AnchorPane.leftAnchor="100.0">
+   <Label layoutX="100.0" layoutY="478.0" text="Regex Recommendation" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="100.0">
       <font>
          <Font name="Arial" size="20.0" />
       </font>

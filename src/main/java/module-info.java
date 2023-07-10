@@ -3,6 +3,8 @@ module com.task.dynamicregex {
     requires javafx.fxml;
     requires java.sql;
     requires org.postgresql.jdbc;
+    requires log4j;
+    requires jasperreports;
 
 
     opens com.task.dynamicregex to javafx.fxml;
