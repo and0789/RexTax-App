@@ -75,18 +75,18 @@
 	<group name="categoryName" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{categoryName}]]></groupExpression>
 		<groupHeader>
-			<band height="58">
+			<band height="59">
 				<textField>
-					<reportElement x="0" y="8" width="525" height="25" uuid="140f4297-6bbe-441d-90a5-84e66acd66f8">
+					<reportElement x="0" y="9" width="525" height="25" uuid="140f4297-6bbe-441d-90a5-84e66acd66f8">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+						<font size="13" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{categoryName}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="33" width="180" height="25" backcolor="#F0F0F0" uuid="186f5049-8a98-408e-b0d8-aaadd736a4ff"/>
+					<reportElement mode="Opaque" x="0" y="34" width="180" height="25" backcolor="#F0F0F0" uuid="186f5049-8a98-408e-b0d8-aaadd736a4ff"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -99,7 +99,7 @@
 					<text><![CDATA[Field]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="180" y="33" width="345" height="25" backcolor="#F0F0F0" uuid="90c47a68-8af9-401a-b77c-ce92bd211398">
+					<reportElement mode="Opaque" x="180" y="34" width="345" height="25" backcolor="#F0F0F0" uuid="90c47a68-8af9-401a-b77c-ce92bd211398">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
