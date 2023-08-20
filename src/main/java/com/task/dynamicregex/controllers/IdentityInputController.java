@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -42,7 +41,7 @@ public class IdentityInputController implements Initializable {
     }
 
     @FXML
-    private void nextButtonOnAction(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
+    private void nextButtonOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if (Common.CASE_IDENTITY == null) {
             CaseIdentity caseIdentity = new CaseIdentity(
                     UUID.randomUUID().toString(),

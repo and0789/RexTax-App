@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -32,16 +33,41 @@
          <Font name="Arial" size="25.0" />
       </font>
    </Label>
-   <GridPane layoutX="100.0" layoutY="168.0" vgap="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+   <HBox alignment="CENTER" layoutX="100.0" layoutY="182.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+      <Label prefWidth="250.0" text="New Artifact Category">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </Label>
+      <TextField fx:id="newCategoryTextField" onKeyReleased="#newCategoryTextFieldOnKeyReleased" prefHeight="40.0" HBox.hgrow="ALWAYS">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+   </HBox>
+   <Button fx:id="addCategoryButton" disable="true" layoutX="629.0" layoutY="242.0" mnemonicParsing="false" onAction="#addCategoryButtonOnAction" prefHeight="40.0" styleClass="green" text="Add" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
+   </Button>
+   <Separator layoutX="100.0" layoutY="303.0" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="303.0" />
+   <GridPane layoutX="100.0" layoutY="385.0" vgap="20.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
       <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="200.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         <ColumnConstraints maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
+         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
       </columnConstraints>
       <rowConstraints>
          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
       </rowConstraints>
-      <Label prefWidth="200.0" text="New Regex">
+      <Label text="New Regex">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
@@ -51,7 +77,7 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label prefWidth="200.0" text="Regex Description" GridPane.rowIndex="1">
+      <Label text="Regex Description (Field)" GridPane.rowIndex="1">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
@@ -61,8 +87,14 @@
             <Font size="16.0" />
          </font>
       </TextField>
+      <Label layoutX="10.0" layoutY="19.0" text="Artifact Category" GridPane.rowIndex="2">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" minWidth="350.0" onAction="#categoryComboBoxOnAction" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </GridPane>
-   <Button fx:id="backButton" layoutX="100.0" layoutY="286.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="40.0" text="Back">
+   <Button fx:id="backButton" layoutX="100.0" layoutY="510.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="40.0" text="Back" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0">
       <font>
          <Font size="15.0" />
       </font>
@@ -70,8 +102,7 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <Separator layoutX="100.0" layoutY="354.0" AnchorPane.bottomAnchor="243.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="354.0" />
-   <Button fx:id="addButton" disable="true" layoutX="632.0" layoutY="286.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="40.0" styleClass="green" text="Add" AnchorPane.rightAnchor="100.0">
+   <Button fx:id="addButton" disable="true" layoutX="632.0" layoutY="510.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="40.0" styleClass="green" text="Add" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
       <font>
          <Font size="15.0" />
       </font>
@@ -79,44 +110,4 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <Label layoutX="100.0" layoutY="379.0" text="Desired Pattern" AnchorPane.bottomAnchor="198.0" AnchorPane.leftAnchor="100.0">
-      <font>
-         <Font name="Arial" size="20.0" />
-      </font>
-   </Label>
-   <HBox layoutX="100.0" layoutY="413.0" spacing="20.0" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
-      <TextField fx:id="desiredPatternTextField" prefHeight="40.0" HBox.hgrow="ALWAYS">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Button fx:id="processButton" disable="true" mnemonicParsing="false" onAction="#processButtonOnAction" prefHeight="40.0" text="Process">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </Button>
-   </HBox>
-   <Label layoutX="100.0" layoutY="478.0" text="Regex Recommendation" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="100.0">
-      <font>
-         <Font name="Arial" size="20.0" />
-      </font>
-   </Label>
-   <HBox layoutX="89.0" layoutY="489.0" spacing="20.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
-      <TextField fx:id="regexRecommendationTextField" prefHeight="40.0" HBox.hgrow="ALWAYS">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Button fx:id="copyButton" disable="true" mnemonicParsing="false" onAction="#copyButtonOnAction" prefHeight="40.0" text="Copy">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </Button>
-   </HBox>
 </AnchorPane>

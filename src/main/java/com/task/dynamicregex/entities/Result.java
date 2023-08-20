@@ -2,11 +2,12 @@ package com.task.dynamicregex.entities;
 
 public class Result {
 
+    private String categoryName;
     private String field;
-
     private String result;
 
-    public Result(String field, String result) {
+    public Result(String categoryName, String field, String result) {
+        this.categoryName = categoryName;
         this.field = field;
         this.result = result;
     }
@@ -14,20 +15,16 @@ public class Result {
     public Result() {
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public String getField() {
         return field;
     }
 
-    public void setField(String field) {
-        this.field = field;
-    }
-
     public String getResult() {
         return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
     }
 
 }

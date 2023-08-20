@@ -37,8 +37,8 @@ public class SocialMediaDao {
         try (Connection connection = PostgreSQLConnection.createConnection()) {
             String query = "INSERT INTO social_media(id, name) VALUES(?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
-                ps.setString(1, socialMedia.getId());
-                ps.setString(2, socialMedia.getName());
+                ps.setString(1, socialMedia.id());
+                ps.setString(2, socialMedia.name());
 
                 if (ps.executeUpdate() != 0) {
                     connection.commit();

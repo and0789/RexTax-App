@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -72,7 +71,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void firstSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException {
+    private void firstSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) {
         selectedSocialMedia = firstSocialMediaListView.getSelectionModel().getSelectedItem();
         if (selectedSocialMedia != null) {
             Common.SOCIALMEDIA = selectedSocialMedia;
@@ -81,7 +80,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void secondSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException {
+    private void secondSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) {
         selectedSocialMedia = secondSocialMediaListView.getSelectionModel().getSelectedItem();
         if (selectedSocialMedia != null) {
             Common.SOCIALMEDIA = selectedSocialMedia;
@@ -104,7 +103,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void backButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(backButton, "file-input.fxml");
     }
 }

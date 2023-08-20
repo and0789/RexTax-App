@@ -9,11 +9,15 @@ import java.io.IOException;
 
 public class Helper {
 
-    public static void changePage(Node node, String fxmlFile) throws IOException {
+    public static void changePage(Node node, String fxmlFile) {
         Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
-        stage.getScene().setRoot(fxmlLoader.load());
-        stage.setTitle("Dynamic Regex");
+        try {
+            stage.getScene().setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("RegTax Social Media Investigations in Volatile Memory");
         stage.show();
     }
 

@@ -2,6 +2,7 @@ package com.task.dynamicregex.controllers;
 
 import com.task.dynamicregex.utils.Common;
 import com.task.dynamicregex.utils.Helper;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,11 +11,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
@@ -58,8 +58,15 @@ public class FileInputController implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("Mem Files", "*.mem"),
-                new FileChooser.ExtensionFilter("Dump Files", "*.dmp"));
+                new FileChooser.ExtensionFilter("Dump Files", "*.dmp"),
+                new FileChooser.ExtensionFilter("Raw Files", "*.raw"));
         selectedFile = fileChooser.showOpenDialog(browseButton.getScene().getWindow());
+
+        if (selectedFile == null && Common.SELECTED_FILE != null) {
+            selectedFile = Common.SELECTED_FILE;
+            return;
+        }
+
         if (selectedFile != null) {
             fileTextField.setText(selectedFile.getPath());
             fileTextField.setStyle("-fx-opacity: 1");
@@ -77,24 +84,67 @@ public class FileInputController implements Initializable {
     }
 
     @FXML
-    private void createHashCodeButtonOnAction(ActionEvent actionEvent) throws IOException, NoSuchAlgorithmException {
-        byte[] data = Files.readAllBytes(Path.of(selectedFile.getPath()));
-        byte[] hash = MessageDigest.getInstance("SHA-256").digest(data);
-        String checksum = new BigInteger(1, hash).toString(16);
-        hashCodeTextField.setText(checksum);
-        hashCodeTextField.setStyle("-fx-opacity: 1");
-        nextButton.setDisable(false);
+    private void createHashCodeButtonOnAction(ActionEvent actionEvent) {
+        Task<String> task = new Task<>() {
+            @Override
+            protected String call() throws IOException, NoSuchAlgorithmException {
+                try (FileInputStream inputStream = new FileInputStream(selectedFile)) {
+                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+                    byte[] buffer = new byte[8192];
+                    int bytesRead;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        digest.update(buffer, 0, bytesRead);
+                    }
+
+                    byte[] hash = digest.digest();
+                    return new BigInteger(1, hash).toString(16);
+                }
+            }
+        };
+
+        task.setOnRunning(event -> {
+            hashCodeTextField.setText("Creating hash code...");
+            hashCodeTextField.setStyle("-fx-opacity: 1");
+            browseButton.setDisable(true);
+            backButton.setDisable(true);
+            createHashCodeButton.setDisable(true);
+            nextButton.setDisable(true);
+        });
+
+        task.setOnSucceeded(event -> {
+            hashCodeTextField.setText(task.getValue());
+            browseButton.setDisable(false);
+            backButton.setDisable(false);
+            createHashCodeButton.setDisable(false);
+            createHashCodeButton.setText("Create Hash Code");
+            nextButton.setDisable(false);
+        });
+
+        task.setOnFailed(event -> {
+            browseButton.setDisable(false);
+            backButton.setDisable(false);
+            createHashCodeButton.setDisable(false);
+            createHashCodeButton.setText("Create Hash Code");
+            nextButton.setDisable(false);
+            task.getException().printStackTrace();
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML
-    private void nextButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void nextButtonOnAction(ActionEvent actionEvent) {
         Common.SELECTED_FILE = selectedFile;
         Common.HASH_CODE = hashCodeTextField.getText();
         Helper.changePage(nextButton, "social-media.fxml");
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void backButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(backButton, "identity-input.fxml");
     }
 }

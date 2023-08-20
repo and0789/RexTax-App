@@ -11,18 +11,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.BasicConfigurator;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,11 +36,15 @@ public class ResultController implements Initializable {
     @FXML
     private TableColumn<Result, Integer> noTableColumn;
     @FXML
+    private TableColumn<Result, String> categoryTableColumn;
+    @FXML
     private TableColumn<Result, String> fieldTableColumn;
     @FXML
     private TableColumn<Result, String> resultTableColumn;
     @FXML
     private Button backButton;
+    @FXML
+    private Button exportButton;
     @FXML
     private ProgressBar progressBar;
     @FXML
@@ -50,29 +55,27 @@ public class ResultController implements Initializable {
         titleLabel.setText("Result");
         resultTableView.setItems(Common.RESULTS);
         noTableColumn.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(resultTableView.getItems().indexOf(data.getValue()) + 1));
+        categoryTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoryName()));
         fieldTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getField()));
         resultTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getResult()));
+        if (resultTableView.getItems().isEmpty()) {
+            exportButton.setDisable(true);
+        }
     }
 
     @FXML
     private void exportButtonOnAction(ActionEvent actionEvent) {
-        if (resultTableView.getItems().isEmpty()) {
-            return;
-        }
-
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
                 BasicConfigurator.configure();
                 HashMap<String, Object> param = new HashMap<>();
-                List<Result> resultList = new ArrayList<>();
 
-                for (Result item : resultTableView.getItems()) {
-                    Result result = new Result(item.getField(), item.getResult());
-                    resultList.add(result);
-                }
+                List<Result> sortedResults = resultTableView.getItems()
+                        .sorted(Comparator.comparing(Result::getCategoryName).thenComparing(Result::getField))
+                        .stream().toList();
 
-                JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(resultList);
+                JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(sortedResults);
 
                 String analysisDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMMM d, yyyy HH:mm"));
                 String datetimeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -88,47 +91,9 @@ public class ResultController implements Initializable {
                 param.put("datetime_now", datetimeNow);
                 param.put("long_date", longDate);
 
-//                int numThreads = Runtime.getRuntime().availableProcessors();
-//                ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
-//                List<Future<JasperPrint>> futures = new ArrayList<>();
-//                JasperPrint combinedPrint = null;
-//
-//                for (int i = 0; i < numThreads; i++) {
-//                    Callable<JasperPrint> task2 = () -> {
-//                        InputStream inputStream = this.getClass().getResourceAsStream("/com/task/dynamicregex/jasper-report/result-report.jasper");
-//                        return JasperFillManager.fillReport(inputStream, param, new JREmptyDataSource());
-//                    };
-//
-//                    Future<JasperPrint> future = executorService.submit(task2);
-//                    futures.add(future);
-//                }
-//
-//                for (Future<JasperPrint> future : futures) {
-//                    try {
-//                        JasperPrint filledReport = future.get();
-//                        if (combinedPrint == null) {
-//                            combinedPrint = filledReport;
-//                        } else {
-//                            for (JRPrintPage page : filledReport.getPages()) {
-//                                combinedPrint.addPage(page);
-//                            }
-//                        }
-//                    } catch (ExecutionException | InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//
-//                executorService.shutdown();
-//
-//                if (combinedPrint != null) {
-//                    JasperViewer viewer = new JasperViewer(combinedPrint, false);
-//                    viewer.setVisible(true);
-//                    viewer.setFitPageZoomRatio();
-//                }
-
                 try {
                     InputStream inputStream = this.getClass().getResourceAsStream("/com/task/dynamicregex/jasper-report/result-report.jasper");
-                    JasperPrint print = JasperFillManager.fillReport(inputStream, param, new JREmptyDataSource());
+                    JasperPrint print = JasperFillManager.fillReport(inputStream, param, dataSource);
                     JasperViewer viewer = new JasperViewer(print, false);
                     viewer.setVisible(true);
                     viewer.setFitPageZoomRatio();
@@ -162,7 +127,7 @@ public class ResultController implements Initializable {
             progressBar.setStyle("-fx-accent: #FF3F3F");
             progressCountLabel.setStyle("-fx-text-fill: white");
             progressCountLabel.setText("Export failed");
-            System.out.println(task.getException().getMessage());
+            task.getException().printStackTrace();
         });
 
         Thread thread = new Thread(task);
@@ -171,7 +136,8 @@ public class ResultController implements Initializable {
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void backButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(backButton, "socmed-regex.fxml");
+        Common.RESULTS.clear();
     }
 }

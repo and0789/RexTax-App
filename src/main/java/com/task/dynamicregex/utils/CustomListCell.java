@@ -14,7 +14,7 @@ public class CustomListCell extends ListCell<SocialMedia> {
             setText(null);
             setCursor(Cursor.DEFAULT);
         } else {
-            setText(item.getName());
+            setText(item.name());
             setCursor(Cursor.HAND);
         }
     }

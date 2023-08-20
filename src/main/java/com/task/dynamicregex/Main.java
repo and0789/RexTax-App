@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("identity-input.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Dynamic Regex");
+        stage.setTitle("RegTax Social Media Investigations in Volatile Memory");
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();

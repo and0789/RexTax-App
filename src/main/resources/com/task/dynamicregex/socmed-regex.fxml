@@ -33,8 +33,9 @@
    <TableView fx:id="socmedRegexTableView" layoutX="276.0" layoutY="150.0" prefHeight="300.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="140.0">
      <columns>
        <TableColumn fx:id="selectTableColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" styleClass="column-center" />
+         <TableColumn fx:id="categoryTableColumn" prefWidth="170.0" text="Artifact Category" />
        <TableColumn fx:id="fieldTableColumn" prefWidth="170.0" text="Field" />
-         <TableColumn fx:id="regexTableColumn" prefWidth="388.0" text="Regex" />
+         <TableColumn fx:id="regexTableColumn" maxWidth="1.7976931348623157E308" minWidth="350.0" prefWidth="-1.0" text="Regex" />
      </columns>
    </TableView>
    <Button fx:id="backButton" layoutX="100.0" layoutY="487.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="40.0" text="Back" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0">

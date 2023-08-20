@@ -1,6 +1,6 @@
 package com.task.dynamicregex.entities;
 
-public record SocialMedia(String id, String name) {
+public record ArtifactCategory(String id, String name, SocialMedia socialMedia) {
 
     @Override
     public String toString() {

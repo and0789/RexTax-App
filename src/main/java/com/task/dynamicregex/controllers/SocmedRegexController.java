@@ -16,18 +16,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class SocmedRegexController implements Initializable {
 
@@ -44,6 +46,8 @@ public class SocmedRegexController implements Initializable {
     @FXML
     private TableColumn<SocmedRegex, CheckBox> selectTableColumn;
     @FXML
+    private TableColumn<SocmedRegex, String> categoryTableColumn;
+    @FXML
     private TableColumn<SocmedRegex, String> fieldTableColumn;
     @FXML
     private TableColumn<SocmedRegex, String> regexTableColumn;
@@ -54,6 +58,7 @@ public class SocmedRegexController implements Initializable {
 
     private ObservableList<SocmedRegex> socmedRegexList;
     private List<SocmedRegex> selectedSocmedRegexList;
+    private boolean isSearchCancelled = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,7 +67,7 @@ public class SocmedRegexController implements Initializable {
         selectedSocmedRegexList = FXCollections.observableArrayList();
 
         try {
-            socmedRegexList.addAll(socmedRegexDao.findBySocialMediaId(Common.SOCIALMEDIA.getId()));
+            socmedRegexList.addAll(socmedRegexDao.findSocmedRegex(Common.SOCIALMEDIA.id()));
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -80,10 +85,11 @@ public class SocmedRegexController implements Initializable {
             socmedRegexTableView.getItems().forEach(item -> item.getMark().setSelected(selectAllCheckBox.isSelected()));
         });
 
-        titleLabel.setText(Common.SOCIALMEDIA.getName() + " Regex");
+        titleLabel.setText(Common.SOCIALMEDIA.name() + " Regex");
         selectTableColumn.setGraphic(selectAllCheckBox);
         socmedRegexTableView.setItems(socmedRegexList);
         selectTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getMark()));
+        categoryTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getArtifactCategory().name()));
         fieldTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getField()));
         regexTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRegex()));
 
@@ -103,7 +109,7 @@ public class SocmedRegexController implements Initializable {
     }
 
     @FXML
-    private void addRegexButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void addRegexButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(addRegexButton, "socmed-regex-add.fxml");
     }
 
@@ -111,60 +117,53 @@ public class SocmedRegexController implements Initializable {
     private void processButtonOnAction(ActionEvent actionEvent) {
         Task<ObservableList<Result>> task = new Task<>() {
             @Override
-            protected ObservableList<Result> call() throws Exception {
-                Stream<String> lines = Files.lines(Common.SELECTED_FILE.toPath());
-                List<String> wordList = lines.flatMap(line -> Arrays.stream(line.split("\\s+"))).toList();
-                lines.close();
-
-                int numThreads = Runtime.getRuntime().availableProcessors();
-                int chunkSize = wordList.size() / numThreads;
-
-                ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
-                List<Future<ObservableList<Result>>> futures = new ArrayList<>();
-
-                for (int i = 0; i < numThreads; i++) {
-                    int startIndex = i * chunkSize;
-                    int endIndex = (i == numThreads - 1) ? wordList.size() : (i + 1) * chunkSize;
-
-                    List<String> subList = wordList.subList(startIndex, endIndex);
-
-                    Callable<ObservableList<Result>> task2 = () -> {
-                        ObservableList<Result> results = FXCollections.observableArrayList();
-                        int wordCount = 0;
-
-                        for (String sub : subList) {
-                            for (SocmedRegex socmedRegex : selectedSocmedRegexList) {
-                                Pattern pattern = Pattern.compile(socmedRegex.getRegex());
-                                Matcher matcher = pattern.matcher(sub);
-                                if (matcher.matches()) {
-                                    results.add(new Result(socmedRegex.getField(), sub));
-                                    wordCount++;
-                                    if (wordCount % 1000 == 0) {
-                                        updateMessage(wordCount + " results found");
-                                    }
-                                }
-                            }
-                        }
-
-                        return results;
-                    };
-
-                    Future<ObservableList<Result>> future = executorService.submit(task2);
-                    futures.add(future);
-                }
-
+            protected ObservableList<Result> call() {
                 ObservableList<Result> combinedResults = FXCollections.observableArrayList();
 
-                for (Future<ObservableList<Result>> future : futures) {
-                    try {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Common.SELECTED_FILE), StandardCharsets.UTF_8))) {
+                    ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+                    List<Future<ObservableList<Result>>> futures = new ArrayList<>();
+                    char[] buffer = new char[8192];
+                    int bytesRead;
+                    AtomicInteger resultsCount = new AtomicInteger();
+
+                    while ((bytesRead = reader.read(buffer)) != -1) {
+                        if (isSearchCancelled) {
+                            executorService.shutdownNow();
+                            return null;
+                        }
+                        String line = new String(buffer, 0, bytesRead);
+                        Callable<ObservableList<Result>> task2 = () -> {
+                            ObservableList<Result> results = FXCollections.observableArrayList();
+
+                            for (SocmedRegex socmedRegex : selectedSocmedRegexList) {
+                                Pattern pattern = Pattern.compile(socmedRegex.getRegex());
+                                Matcher matcher = pattern.matcher(line);
+                                while (matcher.find()) {
+                                    resultsCount.getAndIncrement();
+                                    results.add(new Result(socmedRegex.getArtifactCategory().name(), socmedRegex.getField(), matcher.group()));
+                                    updateMessage(resultsCount + " results found");
+                                }
+                            }
+
+                            return results;
+                        };
+
+                        Future<ObservableList<Result>> future = executorService.submit(task2);
+                        futures.add(future);
+                    }
+
+                    for (Future<ObservableList<Result>> future : futures) {
                         ObservableList<Result> results = future.get();
                         combinedResults.addAll(results);
-                    } catch (ExecutionException | InterruptedException e) {
-                        throw new RuntimeException(e);
                     }
+
+                    executorService.shutdown();
+                } catch (IOException | RuntimeException | OutOfMemoryError | ExecutionException |
+                         InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-                executorService.shutdown();
                 return combinedResults;
             }
         };
@@ -173,25 +172,54 @@ public class SocmedRegexController implements Initializable {
             AnchorPane.setBottomAnchor(socmedRegexTableView, 140.0);
             progressBar.setVisible(true);
             progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            progressBar.setStyle("-fx-accent: #0C80D4");
             progressCountLabel.setVisible(true);
+            progressCountLabel.setStyle("-fx-text-fill: black");
+            backButton.setText("Cancel");
+            addRegexButton.setDisable(true);
+            processButton.setDisable(true);
+            backButton.setOnAction(cancelEvent -> {
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Cancel Search");
+                alert.setContentText("Are you sure you want to cancel the search?");
+                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+                alert.showAndWait();
+
+                if (alert.getResult() == buttonTypeYes) {
+                    isSearchCancelled = true;
+                }
+            });
         });
 
         task.setOnSucceeded(event -> {
-            progressBar.setProgress(0);
             progressCountLabel.textProperty().unbind();
-            Common.RESULTS = task.getValue();
-            try {
+            if (!isSearchCancelled) {
+                Common.RESULTS = task.getValue();
                 Helper.changePage(processButton, "result.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } else {
+                isSearchCancelled = false;
+                backButton.setText("Back");
+                backButton.setOnAction(this::backButtonOnAction);
+                addRegexButton.setDisable(false);
+                processButton.setDisable(false);
+                progressBar.setProgress(1);
+                progressBar.setStyle("-fx-accent: #FF3F3F");
+                progressCountLabel.setStyle("-fx-text-fill: white");
+                progressCountLabel.setText("Search cancelled");
             }
         });
 
         task.setOnFailed(event -> {
-            progressBar.setProgress(0);
-            progressCountLabel.setText("Failed");
+            progressBar.setProgress(1);
+            progressBar.setStyle("-fx-accent: #FF3F3F");
+            progressCountLabel.setStyle("-fx-text-fill: white");
             progressCountLabel.textProperty().unbind();
-            System.out.println(task.getException().getMessage());
+            progressCountLabel.setText("Search failed");
+            task.getException().printStackTrace();
         });
 
         progressCountLabel.textProperty().bind(task.messageProperty());
@@ -202,7 +230,7 @@ public class SocmedRegexController implements Initializable {
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+    private void backButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(backButton, "social-media.fxml");
     }
 }

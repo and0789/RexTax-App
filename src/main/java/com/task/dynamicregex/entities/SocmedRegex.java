@@ -4,69 +4,49 @@ import javafx.scene.control.CheckBox;
 
 public class SocmedRegex {
 
-    private String id;
+    private final String id;
 
-    private String field;
+    private final String field;
 
-    private String regex;
+    private final String regex;
 
-    private SocialMedia socialMedia;
+    private final ArtifactCategory artifactCategory;
 
     private CheckBox mark;
 
-    public SocmedRegex(String id, String field, String regex, SocialMedia socialMedia, CheckBox mark) {
+    public SocmedRegex(String id, String field, String regex, ArtifactCategory artifactCategory, CheckBox mark) {
         this.id = id;
         this.field = field;
         this.regex = regex;
-        this.socialMedia = socialMedia;
+        this.artifactCategory = artifactCategory;
         this.mark = mark;
     }
 
-    public SocmedRegex(String id, String field, String regex, SocialMedia socialMedia) {
+    public SocmedRegex(String id, String field, String regex, ArtifactCategory artifactCategory) {
         this.id = id;
         this.field = field;
         this.regex = regex;
-        this.socialMedia = socialMedia;
+        this.artifactCategory = artifactCategory;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getField() {
         return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
     }
 
     public String getRegex() {
         return regex;
     }
 
-    public void setRegex(String regex) {
-        this.regex = regex;
-    }
-
-    public SocialMedia getSocialMedia() {
-        return socialMedia;
-    }
-
-    public void setSocialMedia(SocialMedia socialMedia) {
-        this.socialMedia = socialMedia;
+    public ArtifactCategory getArtifactCategory() {
+        return artifactCategory;
     }
 
     public CheckBox getMark() {
         return mark;
-    }
-
-    public void setMark(CheckBox mark) {
-        this.mark = mark;
     }
 
 }
