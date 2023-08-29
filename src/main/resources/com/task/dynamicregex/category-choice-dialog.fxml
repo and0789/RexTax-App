@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane expanded="true" prefWidth="450.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+    <header>
+        <Label alignment="CENTER" text="Select an Artifact Category">
+            <font>
+                <Font name="Arial Bold" size="20.0" />
+            </font>
+            <padding>
+                <Insets bottom="10.0" top="10.0" />
+            </padding>
+        </Label>
+    </header>
+    <content>
+        <GridPane alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+         <Label layoutX="20.0" layoutY="70.0" text="Name">
+            <font>
+               <Font name="Arial" size="18.0" />
+            </font>
+         </Label>
+         <ComboBox fx:id="categoryNameComboBox" maxWidth="1.7976931348623157E308" minWidth="310.0" prefHeight="40.0" GridPane.columnIndex="1" />
+        </GridPane>
+    </content>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <ButtonType fx:constant="YES" />
+    <ButtonType fx:constant="NO" />
+   <ButtonType fx:constant="CANCEL" />
+</DialogPane>

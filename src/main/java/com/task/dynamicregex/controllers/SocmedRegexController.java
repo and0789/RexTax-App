@@ -1,10 +1,14 @@
 package com.task.dynamicregex.controllers;
 
+import com.task.dynamicregex.Main;
+import com.task.dynamicregex.dao.ArtifactCategoryDao;
 import com.task.dynamicregex.dao.SocmedRegexDao;
+import com.task.dynamicregex.entities.ArtifactCategory;
 import com.task.dynamicregex.entities.Result;
 import com.task.dynamicregex.entities.SocmedRegex;
 import com.task.dynamicregex.utils.Common;
 import com.task.dynamicregex.utils.Helper;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,8 +16,11 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.BufferedReader;
@@ -23,9 +30,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -41,6 +46,10 @@ public class SocmedRegexController implements Initializable {
     private Button backButton;
     @FXML
     private Button addRegexButton;
+    @FXML
+    private Button editRegexButton;
+    @FXML
+    private Button removeRegexButton;
     @FXML
     private Button processButton;
     @FXML
@@ -59,15 +68,21 @@ public class SocmedRegexController implements Initializable {
     private ObservableList<SocmedRegex> socmedRegexList;
     private List<SocmedRegex> selectedSocmedRegexList;
     private boolean isSearchCancelled = false;
+    private SocmedRegex selectedSocmedRegex;
+    private SocmedRegexDao socmedRegexDao;
+    private ArtifactCategoryDao artifactCategoryDao;
+    private ObservableList<ArtifactCategory> artifactCategoryList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         socmedRegexList = FXCollections.observableArrayList();
-        SocmedRegexDao socmedRegexDao = new SocmedRegexDao();
+        socmedRegexDao = new SocmedRegexDao();
         selectedSocmedRegexList = FXCollections.observableArrayList();
+        artifactCategoryDao = new ArtifactCategoryDao();
+        artifactCategoryList = FXCollections.observableArrayList();
 
         try {
-            socmedRegexList.addAll(socmedRegexDao.findSocmedRegex(Common.SOCIALMEDIA.id()));
+            socmedRegexList.addAll(socmedRegexDao.findAll(Common.SOCIALMEDIA.id()));
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -89,7 +104,7 @@ public class SocmedRegexController implements Initializable {
         selectTableColumn.setGraphic(selectAllCheckBox);
         socmedRegexTableView.setItems(socmedRegexList);
         selectTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getMark()));
-        categoryTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getArtifactCategory().name()));
+        categoryTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getArtifactCategory().getName()));
         fieldTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getField()));
         regexTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRegex()));
 
@@ -109,12 +124,12 @@ public class SocmedRegexController implements Initializable {
     }
 
     @FXML
-    private void addRegexButtonOnAction(ActionEvent actionEvent) {
+    private void addRegexButtonOnAction() {
         Helper.changePage(addRegexButton, "socmed-regex-add.fxml");
     }
 
     @FXML
-    private void processButtonOnAction(ActionEvent actionEvent) {
+    private void processButtonOnAction() {
         Task<ObservableList<Result>> task = new Task<>() {
             @Override
             protected ObservableList<Result> call() {
@@ -141,7 +156,7 @@ public class SocmedRegexController implements Initializable {
                                 Matcher matcher = pattern.matcher(line);
                                 while (matcher.find()) {
                                     resultsCount.getAndIncrement();
-                                    results.add(new Result(socmedRegex.getArtifactCategory().name(), socmedRegex.getField(), matcher.group()));
+                                    results.add(new Result(socmedRegex.getArtifactCategory().getName(), socmedRegex.getField(), matcher.group()));
                                     updateMessage(resultsCount + " results found");
                                 }
                             }
@@ -161,7 +176,7 @@ public class SocmedRegexController implements Initializable {
                     executorService.shutdown();
                 } catch (IOException | RuntimeException | OutOfMemoryError | ExecutionException |
                          InterruptedException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
 
                 return combinedResults;
@@ -219,7 +234,12 @@ public class SocmedRegexController implements Initializable {
             progressCountLabel.setStyle("-fx-text-fill: white");
             progressCountLabel.textProperty().unbind();
             progressCountLabel.setText("Search failed");
-            task.getException().printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Search failed");
+            alert.setContentText(task.getException().getMessage());
+            alert.showAndWait();
         });
 
         progressCountLabel.textProperty().bind(task.messageProperty());
@@ -232,5 +252,132 @@ public class SocmedRegexController implements Initializable {
     @FXML
     private void backButtonOnAction(ActionEvent actionEvent) {
         Helper.changePage(backButton, "social-media.fxml");
+    }
+
+    @FXML
+    private void editRegexButtonOnAction() throws IOException, SQLException, ClassNotFoundException {
+        Optional<SocmedRegex> dialogResult = showEditDialog(selectedSocmedRegex);
+        if (dialogResult.isPresent() && socmedRegexDao.update(dialogResult.get()) == 1) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Regex successfully edited");
+            alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
+            alert.showAndWait();
+            refreshTableView();
+        }
+    }
+
+    @FXML
+    private void removeRegexButtonOnAction() throws SQLException, ClassNotFoundException {
+        Optional<ButtonType> dialogResult = showConfirmAlert();
+        if (dialogResult.isPresent() && dialogResult.get() == ButtonType.OK &&
+                socmedRegexDao.delete(selectedSocmedRegex) == 1) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Regex successfully removed");
+            alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
+            alert.showAndWait();
+            refreshTableView();
+        }
+    }
+
+    @FXML
+    private void tableViewOnMouseClicked() {
+        selectedSocmedRegex = socmedRegexTableView.getSelectionModel().getSelectedItem();
+        if (selectedSocmedRegex != null) {
+            editRegexButton.setVisible(true);
+            removeRegexButton.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void tableViewOnKeyReleased(KeyEvent keyEvent) {
+        selectedSocmedRegex = socmedRegexTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedSocmedRegex == null) {
+            return;
+        }
+
+        editRegexButton.setVisible(true);
+        removeRegexButton.setVisible(true);
+
+        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+            selectedSocmedRegex = null;
+            editRegexButton.setVisible(false);
+            removeRegexButton.setVisible(false);
+            socmedRegexTableView.getSelectionModel().clearSelection();
+        }
+
+        socmedRegexTableView.getSelectionModel().selectedItemProperty()
+                .addListener((observableValue, socmedRegex, t1) -> selectedSocmedRegex = socmedRegexTableView.getSelectionModel().getSelectedItem());
+    }
+
+    private void refreshTableView() throws SQLException, ClassNotFoundException {
+        socmedRegexList.clear();
+        socmedRegexList.addAll(socmedRegexDao.findAll(Common.SOCIALMEDIA.id()));
+        socmedRegexTableView.setItems(socmedRegexList);
+        selectedSocmedRegex = null;
+        editRegexButton.setVisible(false);
+        removeRegexButton.setVisible(false);
+        socmedRegexTableView.getSelectionModel().clearSelection();
+
+    }
+
+    private Optional<SocmedRegex> showEditDialog(SocmedRegex socmedRegex) throws IOException, SQLException, ClassNotFoundException {
+        artifactCategoryList.clear();
+        artifactCategoryList.addAll(artifactCategoryDao.findAll(Common.SOCIALMEDIA.id()));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("regex-edit-dialog.fxml"));
+        DialogPane dialogPane = fxmlLoader.load();
+
+        TextField fieldTextField = (TextField) dialogPane.lookup("#fieldTextField");
+        fieldTextField.setText(socmedRegex.getField());
+        TextField regexTextField = (TextField) dialogPane.lookup("#regexTextField");
+        regexTextField.setText(socmedRegex.getRegex());
+        ComboBox<ArtifactCategory> categoryComboBox = (ComboBox<ArtifactCategory>) dialogPane.lookup("#categoryComboBox");
+        categoryComboBox.setItems(artifactCategoryList);
+        categoryComboBox.setValue(socmedRegex.getArtifactCategory());
+
+        Platform.runLater(() -> {
+            fieldTextField.requestFocus();
+            fieldTextField.positionCaret(fieldTextField.getText().length());
+            fieldTextField.deselect();
+        });
+
+        Dialog<SocmedRegex> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPane);
+        dialog.setTitle("Edit");
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("red");
+
+        fieldTextField.setOnKeyReleased(keyEvent ->
+                dialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(fieldTextField.getText().isBlank()));
+
+        regexTextField.setOnKeyReleased(keyEvent ->
+                dialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(regexTextField.getText().isBlank()));
+
+        categoryComboBox.setOnAction(action ->
+                dialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(categoryComboBox.getValue() == null));
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return new SocmedRegex(
+                        socmedRegex.getId(),
+                        fieldTextField.getText().trim(),
+                        regexTextField.getText().trim(),
+                        categoryComboBox.getValue());
+            }
+            return null;
+        });
+
+        return dialog.showAndWait();
+    }
+
+    private Optional<ButtonType> showConfirmAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to remove " + selectedSocmedRegex.getField() + "?");
+        alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
+        alert.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("red");
+        return alert.showAndWait();
     }
 }

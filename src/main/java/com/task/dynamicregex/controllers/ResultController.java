@@ -6,7 +6,6 @@ import com.task.dynamicregex.utils.Helper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -64,7 +63,7 @@ public class ResultController implements Initializable {
     }
 
     @FXML
-    private void exportButtonOnAction(ActionEvent actionEvent) {
+    private void exportButtonOnAction() {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
@@ -127,7 +126,12 @@ public class ResultController implements Initializable {
             progressBar.setStyle("-fx-accent: #FF3F3F");
             progressCountLabel.setStyle("-fx-text-fill: white");
             progressCountLabel.setText("Export failed");
-            task.getException().printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Export failed");
+            alert.setContentText(task.getException().getMessage());
+            alert.showAndWait();
         });
 
         Thread thread = new Thread(task);
@@ -136,7 +140,7 @@ public class ResultController implements Initializable {
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) {
+    private void backButtonOnAction() {
         Helper.changePage(backButton, "socmed-regex.fxml");
         Common.RESULTS.clear();
     }

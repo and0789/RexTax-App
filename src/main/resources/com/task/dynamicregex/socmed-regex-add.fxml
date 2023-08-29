@@ -102,12 +102,22 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
-   <Button fx:id="addButton" disable="true" layoutX="632.0" layoutY="510.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="40.0" styleClass="green" text="Add" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
-      <font>
-         <Font size="15.0" />
-      </font>
-      <padding>
-         <Insets left="20.0" right="20.0" />
-      </padding>
-   </Button>
+   <HBox layoutX="549.0" layoutY="510.0" spacing="20.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
+      <Button mnemonicParsing="false" onAction="#editRemoveCategoryButtonOnAction" prefHeight="40.0" text="Edit/Remove Artifact Category">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </Button>
+      <Button fx:id="addButton" disable="true" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="40.0" styleClass="green" text="Add">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </Button>
+   </HBox>
 </AnchorPane>

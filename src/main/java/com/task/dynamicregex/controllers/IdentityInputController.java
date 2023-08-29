@@ -5,12 +5,10 @@ import com.task.dynamicregex.entities.CaseIdentity;
 import com.task.dynamicregex.utils.Common;
 import com.task.dynamicregex.utils.Helper;
 import javafx.beans.binding.Bindings;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -41,7 +39,7 @@ public class IdentityInputController implements Initializable {
     }
 
     @FXML
-    private void nextButtonOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+    private void nextButtonOnAction() throws SQLException, ClassNotFoundException {
         if (Common.CASE_IDENTITY == null) {
             CaseIdentity caseIdentity = new CaseIdentity(
                     UUID.randomUUID().toString(),
@@ -66,17 +64,17 @@ public class IdentityInputController implements Initializable {
     }
 
     @FXML
-    private void investigatorTextFieldOnKeyReleased(KeyEvent keyEvent) {
+    private void investigatorTextFieldOnKeyReleased() {
         enableNextButton();
     }
 
     @FXML
-    private void caseTextFieldOnKeyReleased(KeyEvent keyEvent) {
+    private void caseTextFieldOnKeyReleased() {
         enableNextButton();
     }
 
     @FXML
-    private void descriptionTextFieldOnKeyReleased(KeyEvent keyEvent) {
+    private void descriptionTextFieldOnKeyReleased() {
         enableNextButton();
     }
 

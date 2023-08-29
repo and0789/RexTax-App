@@ -3,9 +3,9 @@ package com.task.dynamicregex.controllers;
 import com.task.dynamicregex.utils.Common;
 import com.task.dynamicregex.utils.Helper;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -50,7 +50,7 @@ public class FileInputController implements Initializable {
     }
 
     @FXML
-    private void browseButtonOnAction(ActionEvent actionEvent) {
+    private void browseButtonOnAction() {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open a file");
@@ -84,7 +84,7 @@ public class FileInputController implements Initializable {
     }
 
     @FXML
-    private void createHashCodeButtonOnAction(ActionEvent actionEvent) {
+    private void createHashCodeButtonOnAction() {
         Task<String> task = new Task<>() {
             @Override
             protected String call() throws IOException, NoSuchAlgorithmException {
@@ -128,7 +128,12 @@ public class FileInputController implements Initializable {
             createHashCodeButton.setDisable(false);
             createHashCodeButton.setText("Create Hash Code");
             nextButton.setDisable(false);
-            task.getException().printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Create hash code failed");
+            alert.setContentText(task.getException().getMessage());
+            alert.showAndWait();
         });
 
         Thread thread = new Thread(task);
@@ -137,14 +142,14 @@ public class FileInputController implements Initializable {
     }
 
     @FXML
-    private void nextButtonOnAction(ActionEvent actionEvent) {
+    private void nextButtonOnAction() {
         Common.SELECTED_FILE = selectedFile;
         Common.HASH_CODE = hashCodeTextField.getText();
         Helper.changePage(nextButton, "social-media.fxml");
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) {
+    private void backButtonOnAction() {
         Helper.changePage(backButton, "identity-input.fxml");
     }
 }

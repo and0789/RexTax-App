@@ -30,7 +30,7 @@
          <Font name="Arial" size="20.0" />
       </font>
    </Label>
-   <TableView fx:id="socmedRegexTableView" layoutX="276.0" layoutY="150.0" prefHeight="300.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="140.0">
+   <TableView fx:id="socmedRegexTableView" layoutX="276.0" layoutY="150.0" onKeyReleased="#tableViewOnKeyReleased" onMouseClicked="#tableViewOnMouseClicked" prefHeight="300.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="140.0">
      <columns>
        <TableColumn fx:id="selectTableColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" styleClass="column-center" />
          <TableColumn fx:id="categoryTableColumn" prefWidth="170.0" text="Artifact Category" />
@@ -47,6 +47,22 @@
       </padding>
    </Button>
    <HBox layoutX="388.0" layoutY="487.0" spacing="20.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
+      <Button fx:id="removeRegexButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeRegexButtonOnAction" prefHeight="40.0" styleClass="red" text="Remove" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </Button>
+      <Button fx:id="editRegexButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editRegexButtonOnAction" prefHeight="40.0" text="Edit" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </Button>
       <Button fx:id="addRegexButton" mnemonicParsing="false" onAction="#addRegexButtonOnAction" prefHeight="40.0" styleClass="green" text="Add Regex">
          <font>
             <Font size="15.0" />

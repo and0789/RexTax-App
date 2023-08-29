@@ -8,14 +8,11 @@ import com.task.dynamicregex.utils.Helper;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -57,7 +54,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void addButtonOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+    private void addButtonOnAction() throws SQLException, ClassNotFoundException {
         SocialMedia socialMedia = new SocialMedia(
                 UUID.randomUUID().toString(),
                 addSocialMediaTextField.getText().trim());
@@ -71,7 +68,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void firstSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) {
+    private void firstSocialMediaListViewOnMouseClicked() {
         selectedSocialMedia = firstSocialMediaListView.getSelectionModel().getSelectedItem();
         if (selectedSocialMedia != null) {
             Common.SOCIALMEDIA = selectedSocialMedia;
@@ -80,7 +77,7 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void secondSocialMediaListViewOnMouseClicked(MouseEvent mouseEvent) {
+    private void secondSocialMediaListViewOnMouseClicked() {
         selectedSocialMedia = secondSocialMediaListView.getSelectionModel().getSelectedItem();
         if (selectedSocialMedia != null) {
             Common.SOCIALMEDIA = selectedSocialMedia;
@@ -98,12 +95,12 @@ public class SocialMediaController implements Initializable {
     }
 
     @FXML
-    private void addSocialMediaTextFieldOnKeyReleased(KeyEvent keyEvent) {
+    private void addSocialMediaTextFieldOnKeyReleased() {
         addButton.disableProperty().bind(Bindings.isEmpty(addSocialMediaTextField.textProperty()));
     }
 
     @FXML
-    private void backButtonOnAction(ActionEvent actionEvent) {
+    private void backButtonOnAction() {
         Helper.changePage(backButton, "file-input.fxml");
     }
 }

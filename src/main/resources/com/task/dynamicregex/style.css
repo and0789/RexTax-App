@@ -1,4 +1,5 @@
 .combo-box {
+    -fx-font-family: Arial;
     -fx-font-size: 16px;
 }
 
@@ -28,6 +29,14 @@
 
 .green:hover {
     -fx-background-color: #009674;
+}
+
+.red {
+    -fx-background-color: #e53935;
+}
+
+.red:hover {
+    -fx-background-color: #ad2f2b;
 }
 
 .table-view {
