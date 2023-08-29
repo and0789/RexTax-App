@@ -112,4 +112,24 @@ public class SocmedRegexDao {
         return result;
     }
 
+    public int getSocmedRegexCount(ArtifactCategory artifactCategory) {
+        int result = 0;
+        try (Connection connection = PostgreSQLConnection.createConnection()) {
+            String query = "SELECT COUNT(*) FROM socmed_regex WHERE artifact_category_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, artifactCategory.getId());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        result = rs.getInt("count");
+                    }
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
 }

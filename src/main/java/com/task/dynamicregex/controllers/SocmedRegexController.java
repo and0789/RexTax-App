@@ -375,7 +375,7 @@ public class SocmedRegexController implements Initializable {
     private Optional<ButtonType> showConfirmAlert() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
-        alert.setHeaderText("Are you sure you want to remove " + selectedSocmedRegex.getField() + "?");
+        alert.setHeaderText("Are you sure you want to remove \"" + selectedSocmedRegex.getField() + "\"?");
         alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
         alert.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("red");
         return alert.showAndWait();

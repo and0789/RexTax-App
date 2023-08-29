@@ -61,4 +61,12 @@
          <Insets left="20.0" right="20.0" />
       </padding>
    </Button>
+   <Button layoutX="400.0" layoutY="510.0" mnemonicParsing="false" onAction="#editRemoveSocialMediaButtonOnAction" prefHeight="40.0" text="Edit/Remove Social Media" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
+   </Button>
 </AnchorPane>

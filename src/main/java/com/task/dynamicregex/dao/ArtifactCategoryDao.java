@@ -101,4 +101,24 @@ public class ArtifactCategoryDao {
         return result;
     }
 
+    public int getArtifactCategoryCount(SocialMedia socialMedia) {
+        int result = 0;
+        try (Connection connection = PostgreSQLConnection.createConnection()) {
+            String query = "SELECT COUNT(*) FROM artifact_category WHERE socmed_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, socialMedia.id());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        result = rs.getInt("count");
+                    }
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
 }

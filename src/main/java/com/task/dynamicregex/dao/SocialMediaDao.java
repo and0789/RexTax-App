@@ -52,4 +52,43 @@ public class SocialMediaDao {
         return result;
     }
 
+    public int update(SocialMedia socialMedia) throws SQLException, ClassNotFoundException {
+        int result = 0;
+        try (Connection connection = PostgreSQLConnection.createConnection()) {
+            String query = "UPDATE social_media SET name = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, socialMedia.name());
+                ps.setString(2, socialMedia.id());
+
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public int delete(SocialMedia socialMedia) throws SQLException, ClassNotFoundException {
+        int result = 0;
+        try (Connection connection = PostgreSQLConnection.createConnection()) {
+            String query = "DELETE FROM social_media WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, socialMedia.id());
+
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

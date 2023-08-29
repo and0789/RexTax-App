@@ -137,6 +137,16 @@ public class SocmedRegexAddController implements Initializable {
                 refreshComboBox();
             }
         } else if (choiceDialogResult.isPresent() && choiceDialogResult.get() == ButtonType.NO) {
+            if (socmedRegexDao.getSocmedRegexCount(selectedArtifactCategory) > 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Failed");
+                alert.setHeaderText("Can't remove \"" + selectedArtifactCategory.getName() + "\"");
+                alert.setContentText("Check if there is Regex in the Artifact Category!");
+                alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
+                alert.showAndWait();
+                return;
+            }
+
             Optional<ButtonType> removeConfirmButton = showConfirmAlert();
             if (removeConfirmButton.isPresent() && removeConfirmButton.get() == ButtonType.OK &&
                     artifactCategoryDao.delete(selectedArtifactCategory) == 1) {
@@ -226,7 +236,7 @@ public class SocmedRegexAddController implements Initializable {
     private Optional<ButtonType> showConfirmAlert() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
-        alert.setHeaderText("Are you sure you want to remove " + selectedArtifactCategory.getName() + "?");
+        alert.setHeaderText("Are you sure you want to remove \"" + selectedArtifactCategory.getName() + "\"?");
         alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(Main.class.getResource("/com/task/dynamicregex/style.css")).toExternalForm());
         ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Remove");
         alert.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().add("red");
