@@ -15,6 +15,7 @@ public class Common {
     public static CaseIdentity CASE_IDENTITY;
     public static String HASH_CODE;
     public static ObservableList<Result> RESULTS = FXCollections.observableArrayList();
+    public static int SELECTED_REGEX = 1;
     public static int RESULT_COUNT = 0;
     public static double ELAPSED_TIME;
 

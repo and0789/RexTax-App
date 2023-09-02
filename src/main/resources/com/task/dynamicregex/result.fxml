@@ -59,8 +59,13 @@
       <font>
          <Font size="11.0" />
       </font></Label>
-   <VBox alignment="CENTER" layoutX="100.0" layoutY="511.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
-      <Label fx:id="resultCountLabel" alignment="CENTER" text="Result">
+   <VBox alignment="CENTER" layoutX="200.0" layoutY="502.0" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+      <Label fx:id="selectedRegexLabel" alignment="CENTER" layoutX="172.0" layoutY="29.0" text="Selected Regex">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="resultCountLabel" alignment="CENTER" text="Results Found">
          <font>
             <Font size="13.0" />
          </font>

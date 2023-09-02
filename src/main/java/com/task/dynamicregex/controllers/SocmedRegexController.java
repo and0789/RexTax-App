@@ -177,7 +177,6 @@ public class SocmedRegexController implements Initializable {
 
                     executorService.shutdown();
                 } catch (IOException | RuntimeException | OutOfMemoryError | ExecutionException | InterruptedException e) {
-
                     throw new RuntimeException(e);
                 }
 
@@ -219,6 +218,7 @@ public class SocmedRegexController implements Initializable {
 
             progressCountLabel.textProperty().unbind();
             if (!isSearchCancelled) {
+                Common.SELECTED_REGEX = selectedSocmedRegexList.size();
                 Common.RESULTS = task.getValue();
                 Helper.changePage(processButton, "result.fxml");
             } else {
