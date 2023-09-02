@@ -67,17 +67,13 @@
          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
       </rowConstraints>
-      <Label text="New Regex">
+      <Label text="Artifact Category">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="newRegexTextField" onKeyReleased="#newRegexTextFieldOnKeyReleased" prefHeight="40.0" GridPane.columnIndex="1">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Label text="Regex Description (Field)" GridPane.rowIndex="1">
+      <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" minWidth="350.0" onAction="#categoryComboBoxOnAction" prefHeight="40.0" GridPane.columnIndex="1" />
+      <Label text="Detail Information" GridPane.rowIndex="1">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
@@ -87,12 +83,16 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="10.0" layoutY="19.0" text="Artifact Category" GridPane.rowIndex="2">
+      <Label layoutX="10.0" layoutY="19.0" text="Regular Expression" GridPane.rowIndex="2">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" minWidth="350.0" onAction="#categoryComboBoxOnAction" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="newRegexTextField" onKeyReleased="#newRegexTextFieldOnKeyReleased" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
    </GridPane>
    <Button fx:id="backButton" layoutX="100.0" layoutY="510.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="40.0" text="Back" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0">
       <font>
