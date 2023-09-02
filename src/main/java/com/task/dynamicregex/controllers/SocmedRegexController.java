@@ -130,6 +130,7 @@ public class SocmedRegexController implements Initializable {
 
     @FXML
     private void processButtonOnAction() {
+        long startTime = System.currentTimeMillis();
         Task<ObservableList<Result>> task = new Task<>() {
             @Override
             protected ObservableList<Result> call() {
@@ -156,6 +157,7 @@ public class SocmedRegexController implements Initializable {
                                 Matcher matcher = pattern.matcher(line);
                                 while (matcher.find()) {
                                     resultsCount.getAndIncrement();
+                                    Common.RESULT_COUNT = resultsCount.get();
                                     results.add(new Result(socmedRegex.getArtifactCategory().getName(), socmedRegex.getField(), matcher.group()));
                                     updateMessage(resultsCount + " results found");
                                 }
@@ -174,8 +176,8 @@ public class SocmedRegexController implements Initializable {
                     }
 
                     executorService.shutdown();
-                } catch (IOException | RuntimeException | OutOfMemoryError | ExecutionException |
-                         InterruptedException e) {
+                } catch (IOException | RuntimeException | OutOfMemoryError | ExecutionException | InterruptedException e) {
+
                     throw new RuntimeException(e);
                 }
 
@@ -211,6 +213,10 @@ public class SocmedRegexController implements Initializable {
         });
 
         task.setOnSucceeded(event -> {
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = endTime - startTime;
+            Common.ELAPSED_TIME = elapsedTime / 1000.0;
+
             progressCountLabel.textProperty().unbind();
             if (!isSearchCancelled) {
                 Common.RESULTS = task.getValue();
@@ -229,11 +235,17 @@ public class SocmedRegexController implements Initializable {
         });
 
         task.setOnFailed(event -> {
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = endTime - startTime;
+            Common.ELAPSED_TIME = elapsedTime / 1000.0;
+
             progressBar.setProgress(1);
             progressBar.setStyle("-fx-accent: #FF3F3F");
             progressCountLabel.setStyle("-fx-text-fill: white");
             progressCountLabel.textProperty().unbind();
             progressCountLabel.setText("Search failed");
+            backButton.setText("Back");
+            backButton.setOnAction(this::backButtonOnAction);
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

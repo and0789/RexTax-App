@@ -48,10 +48,16 @@ public class ResultController implements Initializable {
     private ProgressBar progressBar;
     @FXML
     private Label progressCountLabel;
+    @FXML
+    private Label resultCountLabel;
+    @FXML
+    private Label elapsedTimeLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         titleLabel.setText("Result");
+        resultCountLabel.setText("Result: " + Common.RESULT_COUNT);
+        elapsedTimeLabel.setText("Elapsed Time: " + Common.ELAPSED_TIME + " seconds");
         resultTableView.setItems(Common.RESULTS);
         noTableColumn.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(resultTableView.getItems().indexOf(data.getValue()) + 1));
         categoryTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoryName()));

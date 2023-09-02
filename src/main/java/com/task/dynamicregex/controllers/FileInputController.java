@@ -56,8 +56,8 @@ public class FileInputController implements Initializable {
         fileChooser.setTitle("Open a file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Documents"));
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("Mem Files", "*.mem"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("Dump Files", "*.dmp"),
                 new FileChooser.ExtensionFilter("Raw Files", "*.raw"));
         selectedFile = fileChooser.showOpenDialog(browseButton.getScene().getWindow());
