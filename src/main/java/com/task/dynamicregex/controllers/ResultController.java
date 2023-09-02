@@ -49,6 +49,8 @@ public class ResultController implements Initializable {
     @FXML
     private Label progressCountLabel;
     @FXML
+    private Label threadsLabel;
+    @FXML
     private Label selectedRegexLabel;
     @FXML
     private Label resultCountLabel;
@@ -58,6 +60,7 @@ public class ResultController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         titleLabel.setText("Result");
+        threadsLabel.setText("Threads: " + Common.THREADS);
         selectedRegexLabel.setText("Selected Regex: " + Common.SELECTED_REGEX);
         resultCountLabel.setText("Results Found: " + Common.RESULT_COUNT);
         elapsedTimeLabel.setText("Elapsed Time: " + Common.ELAPSED_TIME + " seconds");

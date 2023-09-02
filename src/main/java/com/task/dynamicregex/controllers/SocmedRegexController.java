@@ -41,6 +41,8 @@ public class SocmedRegexController implements Initializable {
     @FXML
     private Label titleLabel;
     @FXML
+    private Label regexSelectedLabel;
+    @FXML
     private TableView<SocmedRegex> socmedRegexTableView;
     @FXML
     private Button backButton;
@@ -98,6 +100,7 @@ public class SocmedRegexController implements Initializable {
             }
             processButton.setDisable(selectedSocmedRegexList.isEmpty());
             socmedRegexTableView.getItems().forEach(item -> item.getMark().setSelected(selectAllCheckBox.isSelected()));
+            regexSelectedLabel.setText(selectedSocmedRegexList.size() + " regex selected");
         });
 
         titleLabel.setText(Common.SOCIALMEDIA.name() + " Regex");
@@ -119,6 +122,7 @@ public class SocmedRegexController implements Initializable {
             processButton.setDisable(selectedSocmedRegexList.isEmpty());
             boolean isSelectedAll = socmedRegexTableView.getItems().stream().map(SocmedRegex::getMark).toList().stream().allMatch(CheckBox::isSelected);
             selectAllCheckBox.setSelected(isSelectedAll);
+            regexSelectedLabel.setText(selectedSocmedRegexList.size() + " regex selected");
         }));
 
     }
@@ -212,12 +216,12 @@ public class SocmedRegexController implements Initializable {
         });
 
         task.setOnSucceeded(event -> {
-            long endTime = System.currentTimeMillis();
-            long elapsedTime = endTime - startTime;
-            Common.ELAPSED_TIME = elapsedTime / 1000.0;
-
             progressCountLabel.textProperty().unbind();
             if (!isSearchCancelled) {
+                Common.THREADS = Runtime.getRuntime().availableProcessors();
+                long endTime = System.currentTimeMillis();
+                long elapsedTime = endTime - startTime;
+                Common.ELAPSED_TIME = elapsedTime / 1000.0;
                 Common.SELECTED_REGEX = selectedSocmedRegexList.size();
                 Common.RESULTS = task.getValue();
                 Helper.changePage(processButton, "result.fxml");
@@ -235,10 +239,6 @@ public class SocmedRegexController implements Initializable {
         });
 
         task.setOnFailed(event -> {
-            long endTime = System.currentTimeMillis();
-            long elapsedTime = endTime - startTime;
-            Common.ELAPSED_TIME = elapsedTime / 1000.0;
-
             progressBar.setProgress(1);
             progressBar.setStyle("-fx-accent: #FF3F3F");
             progressCountLabel.setStyle("-fx-text-fill: white");
@@ -252,6 +252,8 @@ public class SocmedRegexController implements Initializable {
             alert.setHeaderText("Search failed");
             alert.setContentText(task.getException().getMessage());
             alert.showAndWait();
+
+            task.cancel(true);
         });
 
         progressCountLabel.textProperty().bind(task.messageProperty());
