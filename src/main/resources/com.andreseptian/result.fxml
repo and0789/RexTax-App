@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.task.dynamicregex.controllers.ResultController">
+   <Label fx:id="titleLabel" alignment="CENTER" layoutX="371.0" layoutY="30.0" prefHeight="86.0" styleClass="title" text="Title" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <font>
+         <Font name="Arial" size="40.0" />
+      </font>
+      <effect>
+         <DropShadow height="20.0" radius="9.5" width="20.0">
+            <color>
+               <Color opacity="0.5" />
+            </color>
+         </DropShadow>
+      </effect>
+   </Label>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutY="107.0" text="Result List" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="105.0">
+      <font>
+         <Font name="Arial" size="20.0" />
+      </font>
+   </Label>
+   <TableView fx:id="resultTableView" layoutX="276.0" layoutY="150.0" prefHeight="300.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="140.0">
+      <columns>
+         <TableColumn fx:id="noTableColumn" maxWidth="100.0" minWidth="40.0" prefWidth="40.0" sortable="false" styleClass="column-center" text="#" />
+         <TableColumn fx:id="categoryTableColumn" prefWidth="170.0" text="Artifact Category" />
+         <TableColumn fx:id="fieldTableColumn" prefWidth="170.0" text="Detail Information" />
+         <TableColumn fx:id="resultTableColumn" maxWidth="1.7976931348623157E308" minWidth="350.0" prefWidth="-1.0" text="Result" />
+      </columns>
+   </TableView>
+   <Button fx:id="backButton" layoutX="100.0" layoutY="487.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="40.0" text="Back" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
+   </Button>
+   <Button fx:id="exportButton" layoutX="588.0" layoutY="510.0" mnemonicParsing="false" onAction="#exportButtonOnAction" prefHeight="40.0" styleClass="green" text="Export" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
+   </Button>
+   <ProgressBar fx:id="progressBar" layoutX="110.0" layoutY="487.0" prefHeight="20.0" progress="0.0" style="-fx-accent: #0C80D4;" visible="false" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+   <Label fx:id="progressCountLabel" alignment="CENTER" layoutX="100.0" layoutY="477.0" text="0" visible="false" AnchorPane.bottomAnchor="108.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+      <font>
+         <Font size="11.0" />
+      </font></Label>
+   <VBox alignment="CENTER" layoutX="200.0" layoutY="492.0" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+      <Label fx:id="threadsLabel" alignment="CENTER" layoutX="166.0" layoutY="10.0" text="Threads">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectedRegexLabel" alignment="CENTER" layoutX="172.0" layoutY="29.0" text="Selected Regex">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="resultCountLabel" alignment="CENTER" text="Results Found">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="elapsedTimeLabel" alignment="CENTER" text="Elapsed Time">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+   </VBox>
+</AnchorPane>

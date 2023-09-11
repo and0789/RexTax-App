@@ -1,6 +1,6 @@
-package com.andreseptian.util;
+package com.andreseptian.utils;
 
-import com.task.dynamicregex.Main;
+import com.andreseptian.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;

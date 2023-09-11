@@ -1,4 +1,4 @@
-package com.andreseptian.util;
+package com.andreseptian.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

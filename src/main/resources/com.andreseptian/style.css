@@ -1,0 +1,56 @@
+.combo-box {
+    -fx-font-family: Arial;
+    -fx-font-size: 16px;
+}
+
+.button {
+    -fx-background-color: #0C80D4;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: HAND;
+}
+
+.button:hover {
+    -fx-background-color: #08578d;
+}
+
+.list-view {
+    -fx-font-size: 16px;
+}
+
+.title {
+    -fx-background-color: WHITE;
+}
+
+.green {
+    -fx-background-color: #00bd90;
+}
+
+.green:hover {
+    -fx-background-color: #009674;
+}
+
+.red {
+    -fx-background-color: #e53935;
+}
+
+.red:hover {
+    -fx-background-color: #ad2f2b;
+}
+
+.table-view {
+    -fx-font-size: 14px;
+}
+
+.table-view .table-column {
+    -fx-font-size: 16px;
+}
+
+.table-view .column-center {
+    -fx-alignment: CENTER;
+}
+
+.progress-bar {
+    -fx-accent: #0C80D4;
+}
