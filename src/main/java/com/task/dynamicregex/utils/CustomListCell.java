@@ -1,6 +1,6 @@
-package com.andreseptian.utils;
+package com.task.dynamicregex.utils;
 
-import com.andreseptian.entities.SocialMedia;
+import com.task.dynamicregex.entities.SocialMedia;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListCell;
 

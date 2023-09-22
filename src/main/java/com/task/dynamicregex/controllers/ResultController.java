@@ -1,8 +1,8 @@
-package com.andreseptian.controllers;
+package com.task.dynamicregex.controllers;
 
-import com.andreseptian.entities.Result;
-import com.andreseptian.utils.Common;
-import com.andreseptian.utils.Helper;
+import com.task.dynamicregex.entities.Result;
+import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.Helper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;

@@ -1,4 +1,4 @@
-module com.andreseptian {
+module com.task.dynamicregex {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
@@ -7,11 +7,11 @@ module com.andreseptian {
     requires jasperreports;
 
 
-    opens com.andreseptian to javafx.fxml;
-    exports com.andreseptian;
-    exports com.andreseptian.entities;
-    exports com.andreseptian.utils;
-    opens com.andreseptian.utils to javafx.fxml;
-    exports com.andreseptian.controllers;
-    opens com.andreseptian.controllers to javafx.fxml;
+    opens com.task.dynamicregex to javafx.fxml;
+    exports com.task.dynamicregex;
+    exports com.task.dynamicregex.entities;
+    exports com.task.dynamicregex.utils;
+    opens com.task.dynamicregex.utils to javafx.fxml;
+    exports com.task.dynamicregex.controllers;
+    opens com.task.dynamicregex.controllers to javafx.fxml;
 }

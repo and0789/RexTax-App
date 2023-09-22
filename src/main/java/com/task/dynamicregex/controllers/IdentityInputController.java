@@ -1,9 +1,9 @@
-package com.andreseptian.controllers;
+package com.task.dynamicregex.controllers;
 
-import com.andreseptian.dao.CaseIdentityDao;
-import com.andreseptian.entities.CaseIdentity;
-import com.andreseptian.utils.Common;
-import com.andreseptian.utils.Helper;
+import com.task.dynamicregex.dao.CaseIdentityDao;
+import com.task.dynamicregex.entities.CaseIdentity;
+import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.Helper;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

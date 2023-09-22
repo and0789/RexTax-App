@@ -1,13 +1,13 @@
-package com.andreseptian.controllers;
+package com.task.dynamicregex.controllers;
 
-import com.andreseptian.Main;
-import com.andreseptian.dao.ArtifactCategoryDao;
-import com.andreseptian.dao.SocmedRegexDao;
-import com.andreseptian.entities.ArtifactCategory;
-import com.andreseptian.entities.Result;
-import com.andreseptian.entities.SocmedRegex;
-import com.andreseptian.utils.Common;
-import com.andreseptian.utils.Helper;
+import com.task.dynamicregex.Main;
+import com.task.dynamicregex.dao.ArtifactCategoryDao;
+import com.task.dynamicregex.dao.SocmedRegexDao;
+import com.task.dynamicregex.entities.ArtifactCategory;
+import com.task.dynamicregex.entities.Result;
+import com.task.dynamicregex.entities.SocmedRegex;
+import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.Helper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -143,7 +143,8 @@ public class SocmedRegexController implements Initializable {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Common.SELECTED_FILE), StandardCharsets.UTF_8))) {
                     ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
                     List<Future<ObservableList<Result>>> futures = new ArrayList<>();
-                    char[] buffer = new char[8192];
+                    // char[] buffer = new char[8192];
+                    char[] buffer = new char[2097152];
                     int bytesRead;
                     AtomicInteger resultsCount = new AtomicInteger();
 

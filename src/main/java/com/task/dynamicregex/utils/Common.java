@@ -1,8 +1,8 @@
-package com.andreseptian.utils;
+package com.task.dynamicregex.utils;
 
-import com.andreseptian.entities.CaseIdentity;
-import com.andreseptian.entities.Result;
-import com.andreseptian.entities.SocialMedia;
+import com.task.dynamicregex.entities.CaseIdentity;
+import com.task.dynamicregex.entities.Result;
+import com.task.dynamicregex.entities.SocialMedia;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

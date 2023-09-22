@@ -1,9 +1,9 @@
-package com.andreseptian.dao;
+package com.task.dynamicregex.dao;
 
-import com.andreseptian.entities.ArtifactCategory;
-import com.andreseptian.entities.SocialMedia;
-import com.andreseptian.entities.SocmedRegex;
-import com.andreseptian.utils.PostgreSQLConnection;
+import com.task.dynamicregex.entities.ArtifactCategory;
+import com.task.dynamicregex.entities.SocialMedia;
+import com.task.dynamicregex.entities.SocmedRegex;
+import com.task.dynamicregex.utils.PostgreSQLConnection;
 import javafx.scene.control.CheckBox;
 
 import java.sql.Connection;

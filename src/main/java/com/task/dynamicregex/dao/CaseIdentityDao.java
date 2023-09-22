@@ -1,7 +1,7 @@
-package com.andreseptian.dao;
+package com.task.dynamicregex.dao;
 
-import com.andreseptian.entities.CaseIdentity;
-import com.andreseptian.utils.PostgreSQLConnection;
+import com.task.dynamicregex.entities.CaseIdentity;
+import com.task.dynamicregex.utils.PostgreSQLConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

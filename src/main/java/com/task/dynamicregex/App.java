@@ -1,4 +1,4 @@
-package com.andreseptian;
+package com.task.dynamicregex;
 
 public class App {
     public static void main(String[] args) {

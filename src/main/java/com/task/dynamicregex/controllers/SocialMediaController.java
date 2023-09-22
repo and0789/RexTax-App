@@ -1,12 +1,12 @@
-package com.andreseptian.controllers;
+package com.task.dynamicregex.controllers;
 
-import com.andreseptian.Main;
-import com.andreseptian.dao.ArtifactCategoryDao;
-import com.andreseptian.dao.SocialMediaDao;
-import com.andreseptian.entities.SocialMedia;
-import com.andreseptian.utils.Common;
-import com.andreseptian.utils.CustomListCell;
-import com.andreseptian.utils.Helper;
+import com.task.dynamicregex.Main;
+import com.task.dynamicregex.dao.ArtifactCategoryDao;
+import com.task.dynamicregex.dao.SocialMediaDao;
+import com.task.dynamicregex.entities.SocialMedia;
+import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.CustomListCell;
+import com.task.dynamicregex.utils.Helper;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;

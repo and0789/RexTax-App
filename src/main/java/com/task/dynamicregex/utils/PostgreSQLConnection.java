@@ -1,4 +1,4 @@
-package com.andreseptian.utils;
+package com.task.dynamicregex.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

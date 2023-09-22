@@ -1,12 +1,12 @@
-package com.andreseptian.controllers;
+package com.task.dynamicregex.controllers;
 
-import com.andreseptian.Main;
-import com.andreseptian.dao.ArtifactCategoryDao;
-import com.andreseptian.dao.SocmedRegexDao;
-import com.andreseptian.entities.ArtifactCategory;
-import com.andreseptian.entities.SocmedRegex;
-import com.andreseptian.utils.Common;
-import com.andreseptian.utils.Helper;
+import com.task.dynamicregex.Main;
+import com.task.dynamicregex.dao.ArtifactCategoryDao;
+import com.task.dynamicregex.dao.SocmedRegexDao;
+import com.task.dynamicregex.entities.ArtifactCategory;
+import com.task.dynamicregex.entities.SocmedRegex;
+import com.task.dynamicregex.utils.Common;
+import com.task.dynamicregex.utils.Helper;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;

@@ -1,4 +1,4 @@
-package com.andreseptian.entities;
+package com.task.dynamicregex.entities;
 
 import javafx.scene.control.CheckBox;
 

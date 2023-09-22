@@ -1,7 +1,7 @@
-package com.andreseptian.dao;
+package com.task.dynamicregex.dao;
 
-import com.andreseptian.entities.SocialMedia;
-import com.andreseptian.utils.PostgreSQLConnection;
+import com.task.dynamicregex.entities.SocialMedia;
+import com.task.dynamicregex.utils.PostgreSQLConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
