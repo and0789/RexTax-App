@@ -8,7 +8,7 @@ public class PostgreSQLConnection {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/dynamic_regex";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "070809";
+    private static final String PASSWORD = "123456";
 
     public static Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
